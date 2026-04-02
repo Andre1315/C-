@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -11,11 +12,13 @@ namespace Sort
         private Buttons[] array;
         private string name;
         private int cursor;
-        public Menu(string name_, int max_buttons_)
+        private string description;
+        public Menu(string name_, int max_buttons_, string description_)
         {
             name = name_;
             array = new Buttons[max_buttons_];
             cursor = 0;
+            description = description_;
         }
         public void AddButton(string name, int index, string visual_cursor, Action command)
         {
@@ -44,38 +47,11 @@ namespace Sort
             {
                 array[i].render();
             }
+            Console.WriteLine(description);
         }
-        public void cursor_set()
+        public Buttons get_current()
         {
-            array[cursor].focus();
-        }
-        public int cursor_get()
-        {
-            return cursor;
-        }
-        public void press()
-        {
-            array[cursor].press();
-        }
-        public void visual_cursor_set(string visual_cursor_)
-        {
-            array[cursor].visual_cursor_set(visual_cursor_);
-        }
-        public void rename(string newName)
-        {
-            array[cursor].rename(newName);
-        }
-        public string get_name()
-        {
-            return array[cursor].get_name();
-        }
-        public int get_index()
-        {
-            return array[cursor].get_index();
-        }
-        public void set_index(int index)
-        {
-            array[cursor].set_index(index);
+            return array[cursor];
         }
     }
 }

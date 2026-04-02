@@ -9,10 +9,11 @@ namespace Sort
     internal class Buttons
     {
         private string name;
+        private string name_static;
         private string name_focus;
         private string name_real;
-        private string visual_cursor;
-        private int index;
+        public string visual_cursor { get; set; }
+        public int index { get; set; }
         private Action command { get; set; }
         private void name_set()
         {
@@ -26,6 +27,7 @@ namespace Sort
             visual_cursor = visual_cursor_;
             name_set();
             index = 0;
+            name_static = name_;
         }
         public void focus()
         {
@@ -45,21 +47,18 @@ namespace Sort
             name = name_;
             name_set();
         }
-        public void visual_cursor_set(string visual_cursor_)
+        public string get_name_static()
         {
-            visual_cursor = visual_cursor_;
+            return name_static;
         }
-        public string get_name()
+        public string get_name_real()
         {
             return name_real;
         }
-        public void set_index(int index_)
+        public void visual_cursor_set(string visual_cursor_)
         {
-            index = index_;
-        }
-        public int get_index()
-        {
-            return index;
+            visual_cursor = visual_cursor_;
+            name_set();
         }
     }
 }
