@@ -4,151 +4,65 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Sort
 {
-    class Buttons
-    {
-        private string name;
-        private string name_focus;
-        private string name_real;
-        public Buttons(string name_)
-        {
-            name = name_;
-            name_real = name_;
-            name_focus = name_ + " <--";
-        }
-        public void focus()
-        {
-            if (name == name_real) name = name_focus;
-            else name = name_real;
-        }
-        public void render()
-        {
-            Console.WriteLine(name);
-        }
-    }
-    class Menu
-    {
-        private Buttons[] array;
-        private string name;
-        private int cursor;
-        public Menu(string name_, int max_buttons_)
-        {
-            name = name_;
-            array = new Buttons[max_buttons_];
-            cursor = 0;
-        }
-        public void AddButton(string name, int index)
-        {
-            Buttons button = new Buttons(name);
-            array[index] = button;
-        }
-        public void cursor_down()
-        {
-            array[cursor].focus();
-            if (cursor == array.Length - 1) cursor = 0;
-            else cursor++;
-            array[cursor].focus();
-            render();
-        }
-        public void cursor_up()
-        {
-            array[cursor].focus();
-            if (cursor == 0) cursor = array.Length - 1;
-            else cursor--;
-            array[cursor].focus();
-            render();
-        }
-        public void render()
-        {
-            Console.Clear();
-            Console.WriteLine(name);
-            for (int i = 0; i < array.Length; i++)
-            {
-                array[i].render();
-            }
-        }
-        public void cursor_set()
-        {
-            array[cursor].focus();
-        }
-        public int cursor_get()
-        {
-            return cursor;
-        }
-    };
-    class MenuMaster
-    {
-        private Menu[] menus;
-        private int index_selected_menu;
-        public MenuMaster(int max_menu)
-        {
-            menus = new Menu[max_menu];
-            index_selected_menu = 0;
-        }
-        public void AddMenu(Menu menu, int index)
-        {
-            menus[index] = menu;
-        }
-        public void cursor_up_master()
-        {
-            menus[index_selected_menu].cursor_up();
-        }
-        public void cursor_down_master()
-        {
-            menus[index_selected_menu].cursor_down();
-        }
-        public void enter()
-        {
-            int cursor = menus[index_selected_menu].cursor_get() + 1;
-            menus[cursor].render();
-            index_selected_menu = cursor;
-        }
-        public void esc(ref bool bool_)
-        {
-            if (index_selected_menu == 0) bool_ = false;
-            else
-            {
-                index_selected_menu = 0;
-                menus[index_selected_menu].render();
-            }
-        }
-    }
     class Program
     {
+        static private Menu current_menu;
+        static private Menu gen_menu;
+        static void open(Menu menu)
+        {
+            current_menu = menu;
+        }
+        static void sel()
+        {
+            string name = current_menu.get_name() + $" ({current_menu.get_index()})";
+            current_menu.rename(name);
+            int i = current_menu.get_index();
+            current_menu.set_index(i += 1);
+            current_menu.cursor_set();
+        }
         static void Main()
         {
-            Menu menu = new Menu("Бенчмарк сортировок на C#.\nДля выхода нажмите ESC.\n", 2);
-            menu.AddButton("Начать", 0);
-            menu.AddButton("История", 1);
-            menu.render();
-
             Menu start = new Menu("Выбор сортировок для тестирования\n", 3);
-            start.AddButton("Сортировка пузырьком", 0);
-            start.AddButton("Рекурсивная сортировка", 1);
-            start.AddButton("Быстрая сортировка", 2);
+            start.AddButton("Сортировка пузырьком", 0, " +", sel);
+            start.AddButton("Рекурсивная сортировка", 1, " +", sel);
+            start.AddButton("Быстрая сортировка", 2, " +", sel);
+            start.cursor_set();
 
             Menu history = new Menu("История результатов тестирований\n", 5);
-            for (int i = 0; i < 5; i++) history.AddButton($"Результат {i}", i);
+            for (int i = 0; i < 5; i++) history.AddButton($"Результат {i}", i, " <- развернуть", () => Console.WriteLine($"пока ничего нет"));
+            history.cursor_set();
 
-            MenuMaster menu_master = new MenuMaster(3);
-            menu_master.AddMenu(menu, 0);
-            menu_master.AddMenu(start, 1);
-            menu_master.AddMenu(history, 2);
+            Menu menu = new Menu("Бенчмарк сортировок на C#.\nДля выхода нажмите ESC.\n", 2);
+            menu.AddButton("Начать", 0, " <--", () => open(start));
+            menu.AddButton("История", 1, " <--", () => open(history));
+            menu.render();
+            menu.cursor_set();
+
+            current_menu = menu;
+            gen_menu = menu;
 
             bool bool_ = true;
             while (bool_)
             {
                 ConsoleKeyInfo keyInfo = Console.ReadKey(true);
 
-                if (keyInfo.Key == ConsoleKey.UpArrow) menu_master.cursor_up_master();
-                else if (keyInfo.Key == ConsoleKey.DownArrow) menu_master.cursor_down_master();
+                if (keyInfo.Key == ConsoleKey.UpArrow) current_menu.cursor_up();
+                else if (keyInfo.Key == ConsoleKey.DownArrow) current_menu.cursor_down();
 
-                else if (keyInfo.Key == ConsoleKey.Enter) menu_master.enter();
+                else if (keyInfo.Key == ConsoleKey.Enter) current_menu.press();
 
-                else if (keyInfo.Key == ConsoleKey.Escape) menu_master.esc(ref bool_);
+                else if (keyInfo.Key == ConsoleKey.Escape)
+                {
+                    if (current_menu == gen_menu) break;
+                    else
+                    {
+                        current_menu = gen_menu;
+                    }
+                }
+                current_menu.render();
             }
         }
     };

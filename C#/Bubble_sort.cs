@@ -30,9 +30,7 @@ namespace Sort
                 {
                     if (array[i - 1] > array[i])
                     {
-                        int l = array[i - 1];
-                        array[i - 1] = array[i];
-                        array[i] = l;
+                        (array[i], array[i - 1]) = (array[i - 1], array[i]);
                         n++;
                     }
                 }
