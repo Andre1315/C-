@@ -12,7 +12,7 @@ namespace Sort
         private Buttons[] array;
         private string name;
         private int cursor;
-        private string description;
+        public string description {  get; set; }
         public Menu(string name_, int max_buttons_, string description_)
         {
             name = name_;

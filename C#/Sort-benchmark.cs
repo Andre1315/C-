@@ -7,67 +7,24 @@ using System.Threading.Tasks;
 
 namespace Sort
 {
-    class MenuMaster
-    {
-        public Menu current {  get; set; }
-        public Menu gen_menu { get; set; }
-        public MenuMaster() { }
-        public void open_menu(Menu menu)
-        {
-            current = menu;
-            menu.render();
-        }
-        public void sel()
-        {
-            if (current.get_current().visual_cursor == " +")
-            {
-                current.get_current().index += 1;
-                string name = current.get_current().get_name_static();
-                current.get_current().rename(name += $" ({current.get_current().index} раз)");
-                current.get_current().focus();
-            }
-            else
-            {
-                if (current.get_current().index > 0)
-                {
-                    current.get_current().index -= 1;
-                    string name = current.get_current().get_name_static();
-                    current.get_current().rename(name += $" ({current.get_current().index} раз)");
-                    current.get_current().focus();
-                }
-                else
-                {
-                    string name = current.get_current().get_name_static();
-                    current.get_current().rename(name);
-                    current.get_current().focus();
-                }
-            }
-        }
-        public void unwrap()
-        {
-            if (current.get_current().visual_cursor == " <- развернуть")
-            {
-                string name = current.get_current().get_name_static();
-                current.get_current().rename(name += $"\nПока ничего нет");
-                current.get_current().visual_cursor_set(" <- свернуть");
-                current.get_current().focus();
-            }
-            else
-            {
-                string name = current.get_current().get_name_static();
-                current.get_current().rename(name);
-                current.get_current().visual_cursor_set(" <- развернуть");
-                current.get_current().focus();
-            }
-        }
-    }
     class Program
     {
+        static void set(MenuMaster menuMaster, int i)
+        {
+            menuMaster.current.get_current().index1 *= 10;
+            menuMaster.current.get_current().index1 += i;
+            string name = menuMaster.current.get_current().get_name_static();
+            menuMaster.current.get_current().rename(name += $" {menuMaster.current.get_current().index1}");
+            menuMaster.current.get_current().focus();
+
+
+        }
         static void Main()
         {
             MenuMaster menuMaster = new MenuMaster();
+            SortMaster sortMaster = new SortMaster();
 
-            Menu start = new Menu("Выбор сортировок для тестирования.\n", 3, "\nУправление:\n- ESC для возвращения в главное меню.\n- Стрелки вверх и вниз для перемещения.\n- ENTER для выбора.\n- '+' и '-' для выбора типа курсора.");
+            Menu start = new Menu("Выбор сортировок для тестирования.\n", 3, "\nУправление:\n- ESC для возвращения в главное меню.\n- Стрелки вверх и вниз для перемещения.\n- ENTER для выбора.\n- '+' и '-' для выбора типа курсора.\n- SPACEBAR для старта.\n\nСтарт:\n");
             start.AddButton("Сортировка пузырьком", 0, " +", menuMaster.sel);
             start.AddButton("Рекурсивная сортировка", 1, " +", menuMaster.sel);
             start.AddButton("Быстрая сортировка", 2, " +", menuMaster.sel);
@@ -115,6 +72,12 @@ namespace Sort
                     menuMaster.current.get_current().focus();
                 }
 
+                else if (keyInfo.Key == ConsoleKey.Spacebar && menuMaster.current == start)
+                {
+                    sortMaster.quantity_bubble_Sort = menuMaster.current.get_current().index;
+                    sortMaster.start(menuMaster);
+                }
+
                 else if (keyInfo.Key == ConsoleKey.Escape)
                 {
                     if (menuMaster.current == menuMaster.gen_menu) break;
@@ -123,6 +86,57 @@ namespace Sort
                         menuMaster.current = menuMaster.gen_menu;
                     }
                 }
+
+                else if (keyInfo.Key == ConsoleKey.Backspace && menuMaster.current == start)
+                {
+                    menuMaster.current.get_current().index1 /= 10;
+                    string name = menuMaster.current.get_current().get_name_static();
+                    menuMaster.current.get_current().rename(name += $" {menuMaster.current.get_current().index1}");
+                    menuMaster.current.get_current().focus();
+                }
+
+                else if (keyInfo.Key == ConsoleKey.D0 && menuMaster.current == start)
+                {
+                    set(menuMaster, 0);
+                }
+                else if (keyInfo.Key == ConsoleKey.D1 && menuMaster.current == start)
+                {
+                    set(menuMaster, 1);
+
+                }
+                else if (keyInfo.Key == ConsoleKey.D2 && menuMaster.current == start)
+                {
+                    set(menuMaster, 2);
+                }
+                else if (keyInfo.Key == ConsoleKey.D3 && menuMaster.current == start)
+                {
+                    set(menuMaster, 3);
+                }
+                else if (keyInfo.Key == ConsoleKey.D4 && menuMaster.current == start)
+                {
+                    set(menuMaster, 4);
+                }
+                else if (keyInfo.Key == ConsoleKey.D5 && menuMaster.current == start)
+                {
+                    set(menuMaster, 5);
+                }
+                else if (keyInfo.Key == ConsoleKey.D6 && menuMaster.current == start)
+                {
+                    set(menuMaster, 6);
+                }
+                else if (keyInfo.Key == ConsoleKey.D7 && menuMaster.current == start)
+                {
+                    set(menuMaster, 7);
+                }
+                else if (keyInfo.Key == ConsoleKey.D8 && menuMaster.current == start)
+                {
+                    set(menuMaster, 8);
+                }
+                else if (keyInfo.Key == ConsoleKey.D9 && menuMaster.current == start)
+                {
+                    set(menuMaster, 9);
+                }
+
                 menuMaster.current.render();
             }
         }

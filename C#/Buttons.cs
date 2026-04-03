@@ -14,6 +14,7 @@ namespace Sort
         private string name_real;
         public string visual_cursor { get; set; }
         public int index { get; set; }
+        public int index1 { get; set; }
         private Action command { get; set; }
         private void name_set()
         {
@@ -27,6 +28,7 @@ namespace Sort
             visual_cursor = visual_cursor_;
             name_set();
             index = 0;
+            index1 = 0;
             name_static = name_;
         }
         public void focus()

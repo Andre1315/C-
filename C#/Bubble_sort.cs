@@ -8,7 +8,7 @@ namespace Sort
         private int all;
         private readonly Stopwatch sw = new();
         private readonly Random rnd = new();
-        public void Bubble(int number)
+        public void Start(int number)
         {
 
             array = new int[number];
@@ -39,11 +39,9 @@ namespace Sort
             // 3. Останавливаем измерение
             sw.Stop();
         }
-        public void to_string()
+        public string get_string()
         {
-            Console.WriteLine($"\nПрошло {sw.Elapsed.TotalSeconds:F2} секунд.");
-            Console.WriteLine($"Было совершено {all} операций.");
-            Console.WriteLine("Вывести массив?");
+            return $"\nПрошло {sw.Elapsed.TotalSeconds:F2} секунд.\nБыло совершено {all} операций\n";
         }
     }
 }
