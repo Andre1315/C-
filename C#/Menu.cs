@@ -27,14 +27,14 @@ namespace Sort
         }
         public void cursor_down()
         {
-            array[cursor].focus();
+            array[cursor].no_focus();
             if (cursor == array.Length - 1) cursor = 0;
             else cursor++;
             array[cursor].focus();
         }
         public void cursor_up()
         {
-            array[cursor].focus();
+            array[cursor].no_focus();
             if (cursor == 0) cursor = array.Length - 1;
             else cursor--;
             array[cursor].focus();

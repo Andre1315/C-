@@ -10,31 +10,46 @@ namespace Sort
     {
         private string name;
         private string name_static;
-        private string name_focus;
-        private string name_real;
         public string visual_cursor { get; set; }
+        private string visual_cursor_no_focus;
         public int index { get; set; }
         public int index1 { get; set; }
-        private Action command { get; set; }
-        private void name_set()
+        public Action command { get; set; }
+        public enum Modes
         {
-            name_real = name;
-            name_focus = name + visual_cursor;
+            only_button,
+            button_and_index
+        }
+        public Modes mode { get; set; }
+        private void name_set(string visual_cursor_)
+        {
+            if (mode == Modes.button_and_index)
+            {
+                name = visual_cursor_ + name_static + $" ({index}раз) " + index1;
+            }
+            else if (mode == Modes.only_button)
+            {
+                name = visual_cursor_ + name_static;
+            }
         }
         public Buttons(string name_, string visual_cursor_, Action command_)
         {
-            name = name_;
+            visual_cursor_no_focus = "  ";
+            name_static = name_;
             command = command_;
             visual_cursor = visual_cursor_;
-            name_set();
+            name_set(visual_cursor_no_focus);
             index = 0;
             index1 = 0;
-            name_static = name_;
+            mode = Modes.only_button;
         }
         public void focus()
         {
-            if (name == name_real) name = name_focus;
-            else name = name_real;
+            name_set(visual_cursor);
+        }
+        public void no_focus()
+        {
+            name_set(visual_cursor_no_focus);
         }
         public void render()
         {
@@ -44,23 +59,9 @@ namespace Sort
         {
             command?.Invoke();
         }
-        public void rename(string name_)
-        {
-            name = name_;
-            name_set();
-        }
         public string get_name_static()
         {
             return name_static;
-        }
-        public string get_name_real()
-        {
-            return name_real;
-        }
-        public void visual_cursor_set(string visual_cursor_)
-        {
-            visual_cursor = visual_cursor_;
-            name_set();
         }
     }
 }

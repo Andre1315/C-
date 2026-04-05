@@ -25,51 +25,35 @@ namespace Sort
         public Menu current { get; set; }
         public Menu gen_menu { get; set; }
         public MenuMaster() { }
-        public void open_menu(Menu menu)
+        public void open_menu(Menu menu, Buttons.Modes modes)
         {
             current = menu;
+            menu.get_current().mode = modes;
         }
         public void sel()
         {
-            if (current.get_current().visual_cursor == " +")
+            if (current.get_current().visual_cursor == "+ ")
             {
                 current.get_current().index += 1;
-                string name = current.get_current().get_name_static();
-                current.get_current().rename(name += $" ({current.get_current().index} раз)");
-                current.get_current().focus();
             }
             else
             {
                 if (current.get_current().index > 0)
                 {
                     current.get_current().index -= 1;
-                    string name = current.get_current().get_name_static();
-                    current.get_current().rename(name += $" ({current.get_current().index} раз)");
-                    current.get_current().focus();
-                }
-                else
-                {
-                    string name = current.get_current().get_name_static();
-                    current.get_current().rename(name);
-                    current.get_current().focus();
                 }
             }
         }
         public void unwrap()
         {
-            if (current.get_current().visual_cursor == " <- развернуть")
+            if (current.get_current().visual_cursor == "> ")
             {
-                string name = current.get_current().get_name_static();
-                current.get_current().rename(name += $"\nПока ничего нет");
-                current.get_current().visual_cursor_set(" <- свернуть");
-                current.get_current().focus();
+                current.description += "\nпока ничего нет";
+                current.get_current().visual_cursor = ("< ");
             }
             else
             {
-                string name = current.get_current().get_name_static();
-                current.get_current().rename(name);
-                current.get_current().visual_cursor_set(" <- развернуть");
-                current.get_current().focus();
+                current.get_current().visual_cursor = ("> ");
             }
         }
     }
