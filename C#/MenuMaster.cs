@@ -8,11 +8,11 @@ namespace Sort
 {
     internal class SortMaster
     {
-        public int quantity_bubble_Sort { get; set; }
+        public int quantity { get; set; }
         public SortMaster() { }
         public void start(MenuMaster menuMaster)
         {
-            for (int i = 0; i < quantity_bubble_Sort; i++)
+            for (int i = 0; i < quantity; i++)
             {
                 Bubble_sort sort = new Bubble_sort();
                 sort.Start(menuMaster.current.get_current().index1);
@@ -25,10 +25,9 @@ namespace Sort
         public Menu current { get; set; }
         public Menu gen_menu { get; set; }
         public MenuMaster() { }
-        public void open_menu(Menu menu, Buttons.Modes modes)
+        public void open_menu(Menu menu)
         {
             current = menu;
-            menu.get_current().mode = modes;
         }
         public void sel()
         {

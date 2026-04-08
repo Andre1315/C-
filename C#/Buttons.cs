@@ -32,16 +32,16 @@ namespace Sort
                 name = visual_cursor_ + name_static;
             }
         }
-        public Buttons(string name_, string visual_cursor_, Action command_)
+        public Buttons(string name_, string visual_cursor_, Action command_, Modes modes)
         {
             visual_cursor_no_focus = "  ";
             name_static = name_;
             command = command_;
             visual_cursor = visual_cursor_;
-            name_set(visual_cursor_no_focus);
             index = 0;
             index1 = 0;
-            mode = Modes.only_button;
+            mode = modes;
+            name_set(visual_cursor_no_focus);
         }
         public void focus()
         {

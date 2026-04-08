@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using static Sort.Buttons;
 
 namespace Sort
 {
@@ -20,9 +21,9 @@ namespace Sort
             cursor = 0;
             description = description_;
         }
-        public void AddButton(string name, int index, string visual_cursor, Action command)
+        public void AddButton(string name, int index, string visual_cursor, Action command, Modes modes)
         {
-            Buttons button = new Buttons(name, visual_cursor, command);
+            Buttons button = new Buttons(name, visual_cursor, command, modes);
             array[index] = button;
         }
         public void cursor_down()

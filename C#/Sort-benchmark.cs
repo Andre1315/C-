@@ -20,18 +20,18 @@ namespace Sort
             SortMaster sortMaster = new SortMaster();
 
             Menu start = new Menu("Выбор сортировок для тестирования.\n", 3, "\nУправление:\n- ESC для возвращения в главное меню.\n- Стрелки вверх и вниз для перемещения.\n- ENTER для выбора.\n- '+' и '-' для выбора типа курсора.\n- SPACEBAR для старта.\n\nСтарт:\n");
-            start.AddButton("Сортировка пузырьком", 0, "+ ", menuMaster.sel);
-            start.AddButton("Рекурсивная сортировка", 1, "+ ", menuMaster.sel);
-            start.AddButton("Быстрая сортировка", 2, "+ ", menuMaster.sel);
+            start.AddButton("Сортировка пузырьком", 0, "+ ", menuMaster.sel, Buttons.Modes.button_and_index);
+            start.AddButton("Рекурсивная сортировка", 1, "+ ", menuMaster.sel, Buttons.Modes.button_and_index);
+            start.AddButton("Быстрая сортировка", 2, "+ ", menuMaster.sel, Buttons.Modes.button_and_index);
             start.get_current().focus();
 
             Menu history = new Menu("История результатов тестирований\n", 5, "\nУправление:\n- ESC для возвращения в главное меню.\n- Стрелки вверх и вниз для перемещения.\n- ENTER для выбора.");
-            for (int i = 0; i < 5; i++) history.AddButton($"Результат {i}", i, "> ", menuMaster.unwrap);
+            for (int i = 0; i < 5; i++) history.AddButton($"Результат {i}", i, "> ", menuMaster.unwrap, Buttons.Modes.only_button);
             history.get_current().focus();
 
             Menu menu = new Menu("Бенчмарк сортировок на C#.\n", 2, "\nУправление:\n- Для выхода нажмите ESC.\n- Стрелки вверх и вниз для перемещения.\n- ENTER для выбора.");
-            menu.AddButton("Начать", 0, "> ", () => menuMaster.open_menu(start, Buttons.Modes.button_and_index));
-            menu.AddButton("История", 1, "> ", () => menuMaster.open_menu(history, Buttons.Modes.only_button));
+            menu.AddButton("Начать", 0, "> ", () => menuMaster.open_menu(start), Buttons.Modes.only_button);
+            menu.AddButton("История", 1, "> ", () => menuMaster.open_menu(history), Buttons.Modes.only_button);
             menu.render();
 
             menuMaster.current = menu;
@@ -59,7 +59,7 @@ namespace Sort
 
                 else if (keyInfo.Key == ConsoleKey.Spacebar && menuMaster.current == start)
                 {
-                    sortMaster.quantity_bubble_Sort = menuMaster.current.get_current().index;
+                    sortMaster.quantity = menuMaster.current.get_current().index;
                     sortMaster.start(menuMaster);
                 }
 
